@@ -1,25 +1,28 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { graphqlHTTP } = require('express-graphql');
+const { createHandler } = require('graphql-http/lib/use/express');
 const schema = require('./graphql/schema');
 const authRoutes = require('./routes/auth');
 const githubRoutes = require('./routes/github');
+
 const PORT = process.env.PORT || 8080;
 const app = express();
 
 dotenv.config();
 app.use(cors());
 app.use(express.json());
-app.use('/api/auth', authRoutes);
-app.use('/api/github', githubRoutes);
+
 app.use(
   '/graphql',
-  graphqlHTTP({
+  createHandler({
     schema,
     graphiql: process.env.NODE_ENV !== 'production'
   })
 );
+app.use('/api/auth', authRoutes);
+app.use('/api/github', githubRoutes);
+
 app.use((error, request, response, next) => {
   console.error(error.stack);
   response.status(error.status || 500).json({
