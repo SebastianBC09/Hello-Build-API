@@ -17,7 +17,7 @@ requiredEnvVars.forEach(envVar => {
 const jwtCheck = auth({
   audience: 'https://api.hello-build.com',
   issuerBaseURL: 'https://dev-z0d7qop2x7xnoumm.us.auth0.com/',
-  tokenSigningAlg: 'RS256'
+  tokenSigningAlg: 'HS256'
 });
 
 const config = {
