@@ -1,4 +1,5 @@
-const { auth } = require('express-oauth2-jwt-bearer');
+const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
+const checkScopes = requiredScopes('read:messages');
 
 const jwtCheck = auth({
   audience: 'https://api.hello-build.com',
@@ -6,4 +7,4 @@ const jwtCheck = auth({
   tokenSigningAlg: 'RS256'
 });
 
-module.exports = jwtCheck;
+module.exports = { jwtCheck, checkScopes };
