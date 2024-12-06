@@ -1,6 +1,12 @@
 const { Router } = require('express');
 const { jwtCheck } = require('../config/auth0');
-const { login, handleCallback, logout,getProfile } = require('../controllers/authController');
+const {
+  login,
+  handleCallback,
+  logout,
+  getProfile,
+  checkStatus
+} = require('../controllers/authController');
 const router = Router();
 
 router.get('/login', login);
