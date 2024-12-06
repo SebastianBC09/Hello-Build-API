@@ -6,7 +6,7 @@ const {
   removeFromFavorites,
   listRepositories,
   searchRepositories
-} = require('../controllers/githubController');
+} = require('../controllers/githubControllers');
 const router = Router();
 
 router.get('/repositories', jwtCheck, listRepositories);

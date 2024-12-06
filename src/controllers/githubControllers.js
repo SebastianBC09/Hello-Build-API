@@ -1,4 +1,4 @@
-const favoritesService = require('../services/favoritesService');
+const favoritesService = require('../services/favoriteService');
 const { GraphQLClient } = require('graphql-request');
 const { GITHUB_API_URL } = require('../config/github');
 
@@ -92,5 +92,7 @@ const removeFromFavorites = (request, response, next) => {
 module.exports = {
   getUserFavorites,
   addToFavorites,
-  removeFromFavorites
+  removeFromFavorites,
+  listRepositories,
+  searchRepositories
 };
