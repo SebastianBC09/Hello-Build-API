@@ -2,7 +2,12 @@ const { config } = require('../config/auth0');
 
 const login = (request, response, next) => {
   try {
-    const loginUrl = `${config.issuerBaseURL}/authorize?response_type=code&client_id=${config.clientID}&redirect_uri=${config.baseURL}/api/auth/callback&scope=openid profile email`;
+    const loginUrl = `${config.issuerBaseURL}/authorize?` +
+      `response_type=code&` +
+      `client_id=${config.clientID}&` +
+      `redirect_uri=${process.env.BASE_URL}/api/auth/callback&` +
+      `scope=openid profile email&` +
+      `connection=github`;
     response.redirect(loginUrl);
   } catch (error) {
     next(error);
@@ -12,7 +17,13 @@ const login = (request, response, next) => {
 const handleCallback = async (request, response, next) => {
   try {
     const { code } = request.query;
-    response.redirect('/');
+    if (!code) {
+      throw new Error('No code provided');
+    }
+
+    //TODO: Exchange code for token
+    // Redirect to frontend with token
+    response.redirect(`${process.env.CLIENT_URL}?code=${code}`);
   } catch (error) {
     next(error);
   }
