@@ -25,27 +25,27 @@ router.get('/search', jwtCheck, (request, response, next) => {
 router.get('/favorites', jwtCheck, (request, response, next) => {
   try {
     response.status(200).json({
-      message: 'This protected route should list user favorites repositories'
+      message: 'Get user favorite repositories'
     });
   } catch (error) {
     next(error);
   }
 });
 
-router.post('/favorites', jwtCheck, (request, response, next) => {
+router.post('/favorites/:repoId', jwtCheck, (request, response, next) => {
   try {
     response.status(200).json({
-      message: 'This protected route should add the repositorie to favorites'
+      message: 'Add repository to favorites'
     });
   } catch (error) {
     next(error);
   }
 });
 
-router.delete('/favorites', jwtCheck, (request, response, next) => {
+router.delete('/favorites/:repoId', jwtCheck, (request, response, next) => {
   try {
     response.status(200).json({
-      message: 'This protected route should remove repository from favorites'
+      message: 'Remove repository from favorites'
     });
   } catch (error) {
     next(error);
