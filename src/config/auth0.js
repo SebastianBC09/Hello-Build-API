@@ -1,5 +1,18 @@
-const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
-const checkScopes = requiredScopes('read:messages');
+const { auth } = require('express-oauth2-jwt-bearer');
+
+const requiredEnvVars = [
+  'AUTH0_DOMAIN',
+  'AUTH0_CLIENT_ID',
+  'AUTH0_CLIENT_SECRET',
+  'BASE_URL',
+  'CLIENT_URL'
+];
+
+requiredEnvVars.forEach(envVar => {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+});
 
 const jwtCheck = auth({
   audience: 'https://api.hello-build.com',
@@ -16,4 +29,4 @@ const config = {
     secret: process.env.SECRET
 };
 
-module.exports = { jwtCheck, checkScopes, config };
+module.exports = { jwtCheck, config };
