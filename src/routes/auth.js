@@ -4,21 +4,9 @@ const { login, handleCallback, logout,getProfile } = require('../controllers/aut
 const router = Router();
 
 router.get('/login', login);
-
 router.get('/callback', handleCallback);
-
+router.get('/status', jwtCheck, checkStatus);
 router.get('/profile', jwtCheck, getProfile);
-
 router.get('/logout', jwtCheck, logout);
-
-router.get('/status', jwtCheck, (request, response, next) => {
-  try {
-    response.status(200).json({
-      message: "Authentication status check"
-    })
-  } catch (error) {
-    next(error)
-  }
-});
 
 module.exports = router;
