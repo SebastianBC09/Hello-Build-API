@@ -2,12 +2,13 @@ const { config } = require('../config/auth0');
 
 const login = (request, response, next) => {
   try {
-    const loginUrl = `${config.issuerBaseURL}/authorize?` +
+    const loginUrl = `https://${config.issuerBaseURL}/authorize?` +
       `response_type=code&` +
       `client_id=${config.clientID}&` +
-      `redirect_uri=${process.env.BASE_URL}/api/auth/callback&` +
+      `redirect_uri=${config.baseURL}/api/auth/callback&` +
       `scope=openid profile email&` +
       `connection=github`;
+
     response.redirect(loginUrl);
   } catch (error) {
     next(error);
