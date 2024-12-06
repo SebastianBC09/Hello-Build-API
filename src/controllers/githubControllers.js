@@ -34,8 +34,18 @@ const searchRepositories = async (request, response, next) => {
 const getUserFavorites = (request, response, next) => {
   try {
     const userId = request.auth.sub;
-    const favorites = favoritesService.getUserFavorites(userId);
-    response.status(200).json({ favorites });
+    const result = favoritesService.getUserFavorites(userId);
+
+    if (!result.success) {
+      return response.status(400).json({
+        message: result.message
+      });
+    }
+
+    response.status(200).json({
+      favorites: result.favorites,
+      message: result.message
+    });
   } catch (error) {
     next(error);
   }
@@ -44,8 +54,17 @@ const addToFavorites = (request, response, next) => {
   try {
     const userId = request.auth.sub;
     const { repoId } = request.params;
-    favoritesService.addFavorite(userId, repoId);
-    response.status(200).json({ message: 'Repository added to favorites' });
+    const result = favoritesService.addFavorite(userId, repoId);
+
+    if (!result.success) {
+      return response.status(400).json({
+        message: result.message
+      });
+    }
+
+    response.status(200).json({
+      message: result.message
+    });
   } catch (error) {
     next(error);
   }
@@ -54,8 +73,17 @@ const removeFromFavorites = (request, response, next) => {
   try {
     const userId = request.auth.sub;
     const { repoId } = request.params;
-    favoritesService.removeFavorite(userId, repoId);
-    response.status(200).json({ message: 'Repository removed from favorites' });
+    const result = favoritesService.removeFavorite(userId, repoId);
+
+    if (!result.success) {
+      return response.status(400).json({
+        message: result.message
+      });
+    }
+
+    response.status(200).json({
+      message: result.message
+    });
   } catch (error) {
     next(error);
   }
