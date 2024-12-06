@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { jwtCheck } = require('../config/auth0');
+const { getUserFavorites, addToFavorites, removeFromFavorites } = require('../controllers/githubController');
 const router = Router();
 
 router.get('/repositories', jwtCheck, (request, response, next) => {
@@ -22,34 +23,8 @@ router.get('/search', jwtCheck, (request, response, next) => {
   }
 });
 
-router.get('/favorites', jwtCheck, (request, response, next) => {
-  try {
-    response.status(200).json({
-      message: 'Get user favorite repositories'
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post('/favorites/:repoId', jwtCheck, (request, response, next) => {
-  try {
-    response.status(200).json({
-      message: 'Add repository to favorites'
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.delete('/favorites/:repoId', jwtCheck, (request, response, next) => {
-  try {
-    response.status(200).json({
-      message: 'Remove repository from favorites'
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get('/favorites', jwtCheck, getUserFavorites);
+router.post('/favorites/:repoId', jwtCheck, addToFavorites);
+router.delete('/favorites/:repoId', jwtCheck, removeFromFavorites);
 
 module.exports = router;
