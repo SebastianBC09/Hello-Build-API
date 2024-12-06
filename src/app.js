@@ -1,6 +1,7 @@
 const express = require('express');
-const cors = require('cors');
 const dotenv = require('dotenv');
+dotenv.config({ path: '../.env'});
+const cors = require('cors');
 const { createHandler } = require('graphql-http/lib/use/express');
 const schema = require('./graphql/schema');
 const authRoutes = require('./routes/auth');
@@ -9,7 +10,6 @@ const githubRoutes = require('./routes/github');
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-dotenv.config();
 app.use(cors());
 app.use(express.json());
 
