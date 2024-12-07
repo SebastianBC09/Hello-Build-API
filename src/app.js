@@ -1,17 +1,18 @@
 const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env'});
+const { jwtCheck } = require('./config/auth0');
 const cors = require('cors');
 const { createHandler } = require('graphql-http/lib/use/express');
 const schema = require('./graphql/schema');
 const authRoutes = require('./routes/auth');
 const githubRoutes = require('./routes/github');
-
 const PORT = process.env.PORT || 8080;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(jwtCheck);
 
 app.use(
   '/graphql',
