@@ -17,7 +17,7 @@ app.use(
   '/graphql',
   createHandler({
     schema,
-'https://api.hello-build.com',    graphiql: process.env.NODE_ENV !== 'production'
+    graphiql: process.env.NODE_ENV !== 'production'
   })
 );
 app.use('/api/auth', authRoutes);
