@@ -27,23 +27,24 @@ const GET_USER_REPOSITORIES = `
 const SEARCH_REPOSITORIES = `
   query($query: String!) {
     search(query: $query, type: REPOSITORY, last: 10) {
-      nodes {
-        ... on Repository {
-          id
-          name
-          description
-          url
-          stargazerCount
-          primaryLanguage {
+      edges {
+        nodes {
+          ... on Repository {
+            id
             name
-            color
+            description
+            url
+            stargazerCount
+            primaryLanguage {
+              name
+              color
+            }
           }
         }
       }
     }
   }
 `;
-
 
 module.exports = {
     GET_USER_REPOSITORIES,
