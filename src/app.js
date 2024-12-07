@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config({ path: '../.env'});
+dotenv.config({ path: './.env'});
 const cors = require('cors');
 const { createHandler } = require('graphql-http/lib/use/express');
 const schema = require('./graphql/schema');
@@ -17,7 +17,7 @@ app.use(
   '/graphql',
   createHandler({
     schema,
-    graphiql: process.env.NODE_ENV !== 'production'
+'https://api.hello-build.com',    graphiql: process.env.NODE_ENV !== 'production'
   })
 );
 app.use('/api/auth', authRoutes);
