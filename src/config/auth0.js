@@ -16,7 +16,7 @@ requiredEnvVars.forEach(envVar => {
 
 const jwtCheck = auth({
   audience: 'https://api.hello-build.com',
-  issuerBaseURL: 'https://dev-z0d7qop2x7xnoumm.us.auth0.com/',
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
   tokenSigningAlg: 'HS256'
 });
 
@@ -26,7 +26,8 @@ const config = {
     baseURL: process.env.BASE_URL,
     clientID: process.env.AUTH0_CLIENT_ID,
     issuerBaseURL: process.env.AUTH0_DOMAIN,
-    secret: process.env.SECRET
+    secret: process.env.SECRET,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET
 };
 
 module.exports = { jwtCheck, config };
