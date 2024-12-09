@@ -1,50 +1,46 @@
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config({ path: './.env'});
 const cors = require('cors');
-const { createHandler } = require('graphql-http/lib/use/express');
-const schema = require('./graphql/schema');
-const authRoutes = require('./routes/auth');
-const githubRoutes = require('./routes/github');
-const PORT = process.env.PORT || 8080;
+const { port, cors: corsConfig } = require('./config/environment');
+const routes = require('./routes');
 const app = express();
 
 app.use(cors({
-  origin: process.env.CLIENT_URL,
-  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: corsConfig.origin,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/github', githubRoutes);
-app.use('/graphql', createHandler({
-  schema,
-  graphiql: process.env.NODE_ENV !== 'production',
-  context: (req) => ({
-    user: req.auth
-  })
-}));
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 
-app.use((error, request, response, next) => {
-  console.error('Error:', {
-    message: error.message,
-    stack: error.stack,
-    status: error.status
-  });
+app.use('/api', routes);
 
-  response.status(error.status || 500).json({
-    message: error.message || 'Internal Server Error',
-    status: error.status || 500
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+  res.status(statusCode).json({
+    success: false,
+    message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
 
-app.use((request, response) => {
-  response.status(404).json({
-    message: 'Route not found',
-    status: 404
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
   });
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+});
+
+module.exports = app;
