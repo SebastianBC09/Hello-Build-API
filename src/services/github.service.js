@@ -54,10 +54,14 @@ class GitHubService {
     }
 
     const query = `
-      query($query: String!) {
-        viewer {
-          repositories(first: 100, orderBy: {field: UPDATED_AT, direction: DESC}, query: $query) {
-            nodes {
+      query($searchQuery: String!) {
+        search(
+          query: $searchQuery
+          type: REPOSITORY
+          first: 100
+        ) {
+          nodes {
+            ... on Repository {
               id
               name
               description
@@ -76,10 +80,29 @@ class GitHubService {
     `;
 
     try {
-      const data = await this.client.request(query, { query: searchQuery });
-      return data.viewer.repositories.nodes;
+      // Construct the search query to only include user's repositories
+      const userSearchQuery = `user:${await this.getCurrentUsername()} ${searchQuery} in:name`;
+      const data = await this.client.request(query, { searchQuery: userSearchQuery });
+      return data.search.nodes;
     } catch (error) {
       throw new Error(`Failed to search repositories: ${error.message}`);
+    }
+  }
+
+  async getCurrentUsername() {
+    const query = `
+      query {
+        viewer {
+          login
+        }
+      }
+    `;
+
+    try {
+      const data = await this.client.request(query);
+      return data.viewer.login;
+    } catch (error) {
+      throw new Error(`Failed to get current username: ${error.message}`);
     }
   }
 }
