@@ -42,14 +42,23 @@ npm install
 ```
 3. Configure environment variables:
 ```
+# Server Configuration
 PORT=8080
-BASE_URL=http://localhost:8080
-CLIENT_URL=http://localhost:3000
-AUTH0_DOMAIN=your-domain.auth0.com
-AUTH0_CLIENT_ID=your-client-id
-AUTH0_CLIENT_SECRET=your-client-secret
-SECRET=your-secret
-JWT_SECRET=your-jwt-secret
+NODE_ENV='development'
+# URLs Configuration
+BASE_URL='http://localhost:8080'
+CLIENT_URL='http://localhost:3000'
+CORS_ORIGIN='http://localhost:3000'
+# Auth0 Configuration
+AUTH0_DOMAIN='your-auth0-domain.region.auth0.com'
+AUTH0_CLIENT_ID='your-auth0-client-id'
+AUTH0_CLIENT_SECRET='your-auth0-client-secret'
+AUTH0_AUDIENCE='your-auth0-api-identifier'
+# Session Security
+SECRET='your-session-secret-key'
+# GitHub Configuration
+GITHUB_API_VERSION='2022-11-28'
+GITHUB_TOKEN='your-github-personal-access-token'
 ```
 
 4. Run the development server:
