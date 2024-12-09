@@ -1,4 +1,4 @@
-# Hello Build Technical Test 🚀
+# GitHub Favorites Backend Test 🚀
 
 A full-stack application that allows users to authenticate with GitHub and manage their repositories through a simple interface.
 
