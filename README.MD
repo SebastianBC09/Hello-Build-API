@@ -1,110 +1,115 @@
 # GitHub Favorites Backend Test 🚀
 
-A full-stack application that allows users to authenticate with GitHub and manage their repositories through a simple interface.
+Express backend service for managing GitHub repositories with Auth0 authentication.
 
-## Project Overview
+## ✨ Features
+- 🔐 Auth0 + GitHub OAuth Integration
+- 🔒 Protected API Routes
+- 📚 Repository Management API
+- ⭐ Favorites System
+- 🔄 GitHub GraphQL API Integration
+- 🛡️ Security Best Practices
 
-This technical test includes:
-- User authentication via Auth0 and GitHub OAuth
-- Repository listing and search functionality
-- Favorite repositories management
-- Single Page Application architecture
+## 🛠️ Tech Stack
 
-### Tech Stack
-
-**Backend:**
+### Core
 - Node.js v18
-- Express.js
-- Auth0 Authentication
-- GitHub GraphQL API
+- Express.js v4.21
+- GraphQL v16.9
 
-**Frontend:**
-- React (to be implemented)
-- React Router
-- GitHub OAuth integration
+### Authentication & Security
+- jsonwebtoken v9.0
+- jwks-rsa v3.0
+- Auth0 Integration
 
-## Features
+### API & Data Handling
+- axios v1.7
+- graphql-request v4.3
+- graphql-http v1.22
 
-- [x] Login/Sign Up through Auth0
-- [x] GitHub OAuth Integration
-- [x] Protected API Routes
-- [x] Repository Management
-- [x] Favorites System
-- [ ] Frontend Implementation
+### Utils
+- cors v2.8
+- dotenv v16.4
 
-## Getting Started
+## 🚀 Getting Started
 
-1. Clone the repository
-2. Install dependencies:
+### Prerequisites
+
+- Node.js >= 18
+- GitHub account
+- Auth0 account
+
+### Environment Variables
 ```bash
-cd hello-build-api
-npm install
-```
-3. Configure environment variables:
-```
 # Server Configuration
 PORT=8080
 NODE_ENV='development'
+
 # URLs Configuration
 BASE_URL='http://localhost:8080'
 CLIENT_URL='http://localhost:3000'
 CORS_ORIGIN='http://localhost:3000'
+
 # Auth0 Configuration
 AUTH0_DOMAIN='your-auth0-domain.region.auth0.com'
 AUTH0_CLIENT_ID='your-auth0-client-id'
 AUTH0_CLIENT_SECRET='your-auth0-client-secret'
 AUTH0_AUDIENCE='your-auth0-api-identifier'
+
 # Session Security
 SECRET='your-session-secret-key'
+
 # GitHub Configuration
 GITHUB_API_VERSION='2022-11-28'
 GITHUB_TOKEN='your-github-personal-access-token'
 ```
+### Installation
 
-4. Run the development server:
 ```bash
+# Clone repository
+git clone <repository-url>
+
+# Install dependencies
+cd hello-build-api
+npm install
+
+# Run development server
 npm run dev
 ```
+## 🔌 API Endpoints
 
-## API Endpoints
 ### Auth Routes
-- **GET** `/api/auth/login` - Initiates login flow
+- **GET** `/api/auth/login` - Initiate login flow
 - **GET** `/api/auth/callback` - OAuth callback handler
 - **GET** `/api/auth/profile` - Get user profile
 - **GET** `/api/auth/logout` - Logout user
+
 ### GitHub Routes
-- **GET** `/api/github/repositories` - List user repositories
+- **GET** `/api/github/repositories` - List repositories
 - **GET** `/api/github/search` - Search repositories
-- **GET** `/api/github/favorites` - Get favorite repositories
-- **POST** `/api/github/favorites/:repoId` - Add repository to favorites
-- **DELETE** `/api/github/favorites/:repoId` - Remove repository from favorites
+### Favorites Routes
+- **GET** `/api/favorites` - Get user's favorites
+- **POST** `/api/favorites/:repoId` - Add repository to favorites
+- **DELETE** `/api/favorites/:repoId` - Remove from favorites
 
-## Technical Decisions
-1. **Auth0 Integration:** Chosen for robust authentication and easy GitHub OAuth integration
-2. **Express.js:** Lightweight and flexible backend framework
-3. **In-Memory Storage:** Simple favorites management for demonstration purposes
+## 🏗️ Project Structure
+```
+src/
+├── config/          # Configuration files
+├── controllers/     # Route controllers
+├── middleware/      # Custom middleware
+├── routes/          # API routes
+├── services/        # Business logic
+└── utils/           # Helper functions
+```
 
-## Author
+## 🔒 Security Features
+- Auth0 authentication
+- CORS configuration
+- JWT verification via jwks-rsa
+
+## 👨‍💻 Author
 Sébastien Ballen Castaneda
-## License
-MIT License
 
-Copyright (c) 2024 Sébastien Ballen Castaneda
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## 📜 License
+MIT License - see LICENSE file for details
