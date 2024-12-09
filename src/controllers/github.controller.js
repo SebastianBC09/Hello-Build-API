@@ -34,3 +34,17 @@ exports.searchRepositories = asyncHandler(async (req, res) => {
     });
   }
 });
+
+exports.getRepository = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const githubService = new GitHubService(req.user.githubToken);
+    const repository = await githubService.getRepository(id);
+    res.json(repository);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});

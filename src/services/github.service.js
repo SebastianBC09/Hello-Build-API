@@ -105,6 +105,34 @@ class GitHubService {
       throw new Error(`Failed to get current username: ${error.message}`);
     }
   }
+
+  async getRepository(id) {
+    const query = `
+      query($id: ID!) {
+        node(id: $id) {
+          ... on Repository {
+            id
+            name
+            description
+            url
+            isPrivate
+            stargazerCount
+            primaryLanguage {
+              name
+              color
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const data = await this.client.request(query, { id });
+      return data.node;
+    } catch (error) {
+      throw new Error(`Failed to fetch repository: ${error.message}`);
+    }
+  }
 }
 
 module.exports = GitHubService;
