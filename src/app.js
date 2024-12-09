@@ -12,6 +12,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', authRoutes);
 app.use(jwtCheck);
 
 app.use(
@@ -21,7 +22,6 @@ app.use(
     graphiql: process.env.NODE_ENV !== 'production'
   })
 );
-app.use('/api/auth', authRoutes);
 app.use('/api/github', githubRoutes);
 
 app.use((error, request, response, next) => {
@@ -30,7 +30,9 @@ app.use((error, request, response, next) => {
     message: error.message || 'Internal Server Error'
   });
 });
+
 app.use((request, response) => {
   response.status(404).json({ message: 'Route not found' });
 });
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
