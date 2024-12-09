@@ -1,7 +1,7 @@
 const GET_USER_REPOSITORIES = `
-  query {
+  query($first: Int!, $after: String) {
     viewer {
-      repositories(first: $first, after: $after)) {
+      repositories(first: $first, after: $after, orderBy: {field: UPDATED_AT, direction: DESC}) {
         nodes {
           id
           name
@@ -13,6 +13,7 @@ const GET_USER_REPOSITORIES = `
           }
           isPrivate
           updatedAt
+          stargazerCount
         }
         pageInfo {
           hasNextPage
@@ -25,10 +26,10 @@ const GET_USER_REPOSITORIES = `
 `;
 
 const SEARCH_REPOSITORIES = `
-  query($query: String!) {
-    search(query: $query, type: REPOSITORY, last: 10) {
+  query($query: String!, $first: Int!) {
+    search(query: $query, type: REPOSITORY, first: $first) {
       edges {
-        nodes {
+        node {
           ... on Repository {
             id
             name
@@ -39,8 +40,14 @@ const SEARCH_REPOSITORIES = `
               name
               color
             }
+            isPrivate
+            updatedAt
           }
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
