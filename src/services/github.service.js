@@ -1,11 +1,11 @@
 const { GraphQLClient } = require('graphql-request');
-
+require('dotenv').config();
 class GitHubService {
-  constructor() {
-    this.client = null;
-  }
+  constructor(accessToken = process.env.GITHUB_TOKEN) {
+    if (!accessToken) {
+      throw new Error('Access token is required');
+    }
 
-  initialize(accessToken) {
     this.client = new GraphQLClient('https://api.github.com/graphql', {
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -14,6 +14,10 @@ class GitHubService {
   }
 
   async getUserRepositories() {
+    if (!this.client) {
+      throw new Error('GitHub client is not initialized');
+    }
+
     const query = `
       query {
         viewer {
@@ -26,6 +30,10 @@ class GitHubService {
               isPrivate
               stargazerCount
               updatedAt
+              primaryLanguage {
+                name
+                color
+              }
             }
           }
         }
@@ -40,11 +48,15 @@ class GitHubService {
     }
   }
 
-  async searchRepositories(query) {
-    const searchQuery = `
-      query($searchQuery: String!) {
+  async searchUserRepositories(searchQuery) {
+    if (!this.client) {
+      throw new Error('GitHub client is not initialized');
+    }
+
+    const query = `
+      query($query: String!) {
         viewer {
-          repositories(first: 100, query: $searchQuery) {
+          repositories(first: 100, orderBy: {field: UPDATED_AT, direction: DESC}, query: $query) {
             nodes {
               id
               name
@@ -53,6 +65,10 @@ class GitHubService {
               isPrivate
               stargazerCount
               updatedAt
+              primaryLanguage {
+                name
+                color
+              }
             }
           }
         }
@@ -60,7 +76,7 @@ class GitHubService {
     `;
 
     try {
-      const data = await this.client.request(searchQuery, { searchQuery: query });
+      const data = await this.client.request(query, { query: searchQuery });
       return data.viewer.repositories.nodes;
     } catch (error) {
       throw new Error(`Failed to search repositories: ${error.message}`);
@@ -68,4 +84,4 @@ class GitHubService {
   }
 }
 
-module.exports = new GitHubService();
+module.exports = GitHubService;
