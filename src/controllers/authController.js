@@ -154,6 +154,16 @@ const logout = (request, response, next) => {
   }
 };
 
+const checkStatus = (request, response, next) => {
+  try {
+    response.status(200).json({
+      message: "Authentication status check"
+    })
+  } catch (error) {
+    next(error)
+  }
+};
+
 const getProfile = (request, response, next) => {
   try {
     const userProfile = request.auth;
@@ -169,6 +179,9 @@ const getProfile = (request, response, next) => {
 module.exports = {
   login,
   handleCallback,
+  getManagementToken,
+  getGithubToken,
+  checkStatus,
   logout,
   getProfile
 };
